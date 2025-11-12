@@ -1,7 +1,20 @@
+ext.cdvCompileSdkVersion = 35
+
 repositories {
     maven {
         url 'https://pkgs.dev.azure.com/MicrosoftDeviceSDK/DuoSDK-Public/_packaging/Duo-SDK-Feed/maven/v1'
     }
+    mavenCentral()
+    google()
 }
 
-ext.cdvCompileSdkVersion = 35
+configurations.all {
+    resolutionStrategy {
+        eachDependency { details ->
+            if (details.requested.group == 'io.opentelemetry' &&
+                details.requested.name == 'opentelemetry-bom') {
+                details.useTarget "io.opentelemetry:opentelemetry-bom:1.18.0@pom"
+            }
+        }
+    }
+}
